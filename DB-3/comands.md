@@ -114,8 +114,17 @@ SELECT a.first_name, a.last_name, c.name, b.grade FROM students a JOIN grades b 
 SELECT a.last_name, a.first_name, AVG(b.grade) AS grade_by_student FROM students a JOIN grades b ON a.id = b.student_id GROUP BY a.last_name, a.first_name;
 ```
 
-```sql
+- Количество студентов на каждом курсе (группировка по курсам)
 
+```sql
+SELECT c.course_name, COUNT(s.id) AS student_count
+FROM courses c
+JOIN students s ON s.course_id = c.id
+GROUP BY c.course_name;
+-- Количество студентов по полу
+SELECT gender, COUNT(*) AS total_students
+FROM students
+GROUP BY gender;
 ```
 
 ```sql

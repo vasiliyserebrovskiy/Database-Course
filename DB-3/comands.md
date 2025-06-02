@@ -90,31 +90,31 @@ INSERT INTO grades (student_id, subject_id, grade) VALUES
 (4, 1, 5.0);
 ```
 
-- Самый молодой студент
+- 1 Самый молодой студент
 
 ```sql
 SELECT MIN(age) AS young_student FROM students;
 ```
 
-- Самый возрастной преподаватель
+- 2 Самый возрастной преподаватель
 
 ```sql
 SELECT MAX(age) AS old_teacher FROM teachers;
 ```
 
-- Оценки студентов по предметам
+- 3 Оценки студентов по предметам
 
 ```sql
 SELECT a.first_name, a.last_name, c.name, b.grade FROM students a JOIN grades b ON a.id = b.student_id JOIN subjects c ON b.subject_id = c.id;
 ```
 
-- Средний бал по студентам
+- 4 Средний бал по студентам
 
 ```sql
 SELECT a.last_name, a.first_name, AVG(b.grade) AS grade_by_student FROM students a JOIN grades b ON a.id = b.student_id GROUP BY a.last_name, a.first_name;
 ```
 
-- Количество студентов на каждом курсе (группировка по курсам)
+- 5 Количество студентов на каждом курсе (группировка по курсам)
 
 ```sql
 SELECT c.course_name, COUNT(s.id) AS student_count
@@ -123,15 +123,15 @@ JOIN students s ON s.course_id = c.id
 GROUP BY c.course_name;
 ```
 
-- Количество студентов по полу
+- 6 Количество студентов по полу
 
 ```sql
-SELECT gender, COUNT(\*) AS total_students
+SELECT gender, COUNT(*) AS total_students
 FROM students
 GROUP BY gender;
 ```
 
-- средний бал по факультетам
+- 7 средний бал по факультетам
 
 ```sql
 SELECT
@@ -144,7 +144,7 @@ FROM
 GROUP BY f.id;
 ```
 
-- Преподаватели, а так же предметы, которые они ведут
+- 8 Преподаватели, а так же предметы, которые они ведут
 
 ```sql
 SELECT t.first_name, t.last_name, s.name AS subject
@@ -152,14 +152,41 @@ FROM teachers t
 JOIN subjects s ON s.teacher_id = t.id;
 ```
 
-```sql
+---
 
+- 9 Количество студентов у каждого преподавателя(через предметы и оценки)
+
+```sql
+SELECT
+  CONCAT(t.first_name, ' ', t.last_name) AS teacher_name,
+  COUNT(DISTINCT g.student_id) AS student_count
+FROM teachers t
+JOIN subjects s ON t.id = s.teacher_id
+JOIN grades g ON s.id = g.subject_id
+GROUP BY t.id;
 ```
 
-```sql
+- 10 Средний возраст студентов по факультетам
 
+```sql
+SELECT
+  f.faculty_name,
+  ROUND(AVG(s.age), 1) AS avg_age
+FROM faculty f
+JOIN students s ON s.faculty_id = f.id
+GROUP BY f.faculty_name;
 ```
 
+- 11 Средний балл по семестрам
+
 ```sql
+SELECT
+  c.semestr,
+  ROUND(AVG(g.grade), 2) AS avg_grade
+FROM courses c
+JOIN students s ON s.course_id = c.id
+JOIN grades g ON s.id = g.student_id
+GROUP BY c.semestr
+ORDER BY c.semestr;
 
 ```

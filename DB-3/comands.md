@@ -121,22 +121,35 @@ SELECT c.course_name, COUNT(s.id) AS student_count
 FROM courses c
 JOIN students s ON s.course_id = c.id
 GROUP BY c.course_name;
--- Количество студентов по полу
-SELECT gender, COUNT(*) AS total_students
+```
+
+- Количество студентов по полу
+
+```sql
+SELECT gender, COUNT(\*) AS total_students
 FROM students
 GROUP BY gender;
 ```
 
-```sql
+- средний бал по факультетам
 
+```sql
+SELECT
+  faculty_name,
+  AVG(grade) AS avg_grade
+FROM
+  faculty f
+  JOIN students s ON s.faculty_id = f.id
+  JOIN grades g ON g.student_id = s.id
+GROUP BY f.id;
 ```
 
-```sql
-
-```
+- Преподаватели, а так же предметы, которые они ведут
 
 ```sql
-
+SELECT t.first_name, t.last_name, s.name AS subject
+FROM teachers t
+JOIN subjects s ON s.teacher_id = t.id;
 ```
 
 ```sql

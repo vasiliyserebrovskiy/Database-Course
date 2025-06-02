@@ -190,3 +190,16 @@ GROUP BY c.semestr
 ORDER BY c.semestr;
 
 ```
+
+- 12 Преподаватели, у которых средняя оценка студентов выше 4.5
+
+```sql
+SELECT
+  CONCAT(t.first_name, ' ', t.last_name) AS teacher_name,
+  ROUND(AVG(g.grade)::numeric, 2) AS avg_teacher_grade
+FROM teachers t
+JOIN subjects s ON t.id = s.teacher_id
+JOIN grades g ON s.id = g.subject_id
+GROUP BY t.id
+HAVING AVG(g.grade) > 4.5;
+```
